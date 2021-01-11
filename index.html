@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html style="height: 100%; width: 100%; overflow: hidden;">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>心智圖/概念圖/知識圖譜 draw in graphviz - demo</title>
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+        <script src="https://unpkg.com/@hpcc-js/wasm@0.3.11/dist/index.min.js"></script>
+        <script src="https://unpkg.com/d3-graphviz@3.0.5/build/d3-graphviz.js"></script>
+    </head>
+    <body style="height: 100%; width: 100%;">
+        <div style="height: 100%; width:30%; display: inline-block;">
+            <div class="table">
+                <div class="row" style="height: 5%;">
+                    上傳ISLAB概念圖檔案：<br />
+                    <input id="html_uploader" class="cell" type="file" style="width:60%" />
+                    <button class="cell" style="float: right;" onclick="upload_file()">上傳檔案</button>
+                </div>
+                <hr />
+                <div class="row" style="height: 90%; width: 100%;">
+                    輸入自己的圖：<br />
+                    <textarea class="cell" id="html_user_input" style="height:80%; width:95%; display:block; margin-right:auto; margin-left:auto; cursor:text; resize:none; border:1px black solid;">graph&#13;&#10;{&#13;&#10;b [label=connection shape=circle fixedsize=true width=.5]; &#13;&#10;a -- b; &#13;&#10;b -- c;&#13;&#10;}</textarea>
+                    <br />
+                    <button id="draw_submit" class="cell" style="float: right;" onclick="draw_graph(document.getElementById('html_user_input').value)">draw</button>
+                </div>
+            </div>
+        </div>
+        
+        <div style="height: 100%; min-width: 68%; max-width: 69.5%; display: inline-block">
+            <div class="table">
+                <div class="row" style="height: 100%; width: 100%">
+                    <div id="graph" class="cell" style="height: 90%; width: 90%; top: 0%; text-align: center;"></div>
+                </div>
+            </div>
+            
+        </div>
+        
+        <link rel=stylesheet type="text/css" href="index.css">
+        <script type="text/javascript" src="main.js"></script>
+    </body>
+</html>
