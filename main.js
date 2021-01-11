@@ -59,6 +59,33 @@ function parser_concept_file(data){
 }
 
 
+//把data_array轉成graphviz字串
+function get_grapgviz_string(data_array){
+    let link_array = data_array[0];
+    let node_array = data_array[1];
+    let conjunction_array = data_array[2];
+
+    //寫入畫圖字串
+    let string = "graph\n{";
+
+    for (let i = 0; i < node_array.length; i++){        //概念為circle
+        string += `\n${node_array[i]} [shape=circle fixedsize=true width=1 height=1];`;
+    }
+
+    for (let i = 0; i < conjunction_array.length; i++){ //連接詞為box
+        string += `\n${conjunction_array[i]} [shape=box fixedsize=true width=.5 height=.5];`;
+    }
+
+    for (let i = 0; i < link_array.length; i++){        //寫入連接
+        string += `\n${link_array[i]};`;
+    }
+
+    string += "\n}";
+    
+    return string;
+}
+
+
 //上傳檔案按鈕, 由於上傳檔案格式固定, 所以直接把要做的是直接寫在後面
 async function upload_file(){
     let file = document.querySelector("#html_uploader").files[0];
@@ -67,27 +94,7 @@ async function upload_file(){
     let element = document.getElementById("html_user_input");
     let result_string = element.value;
     let data_array = parser_concept_file(result_string);
-    
-    let link_array = data_array[0];
-    let node_array = data_array[1];
-    let conjunction_array = data_array[2];
-
-    //寫入畫圖字串
-    element.value = "graph\n{";
-
-    for (let i = 0; i < node_array.length; i++){        //概念為circle
-        element.value += `\n${node_array[i]} [shape=circle fixedsize=true width=1 height=1];`;
-    }
-
-    for (let i = 0; i < conjunction_array.length; i++){ //連接詞為box
-        element.value += `\n${conjunction_array[i]} [shape=box fixedsize=true width=.5 height=.5];`;
-    }
-
-    for (let i = 0; i < link_array.length; i++){        //寫入連接
-        element.value += `\n${link_array[i]};`;
-    }
-
-    element.value += "\n}";
+    element.value = get_grapgviz_string(data_array);
     document.getElementById("draw_submit").click();
 }
 
