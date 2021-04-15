@@ -2,6 +2,32 @@
 document.getElementById("draw_submit").click();
 
 
+//count, 用來計算source_str裡有多少個target_str
+function string_count(source_str, target_str) {
+    return source_str.split(target_str).length - 1
+}
+
+//replace_all, 取代javascript裡對應的replaceAll, 主因是不知為啥replaceAll很常自己消失, 所以自己刻一個replaceAll功能的function
+function replace_all(source_str, target_str, replace_str) {
+    let count = string_count(source_str, target_str);
+    for (let i = 0; i < count; i++) {
+        source_str = source_str.replace(target_str, replace_str);
+    }
+    return source_str
+}
+
+
+function save_svg(svgEl) {
+    svgEl.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    var svgData = svgEl.outerHTML;
+    var preface = '<?xml version="1.0" standalone="no"?>\r\n';
+    var svgBlob = new Blob([preface, svgData], {type:"image/svg+xml;charset=utf-8"});
+    var svgUrl = URL.createObjectURL(svgBlob);
+    let e = document.getElementById("img_area");
+    e.src = svgUrl;
+}
+
+
 //用d3+graphviz畫圖
 function draw_graph(command){
     d3.select("#graph").graphviz().renderDot(command);
@@ -28,14 +54,18 @@ function remove_array_item(arr, item){
 }
 
 
-//把概念圖程式輸出的資料轉換成graphviz的格式
+//把概念圖程式輸出的資料轉換成graphviz的中間格式, 準備給其他function用
 function parser_concept_file(data){
     let link_array = new Array();           //儲存兩點連接的字串
     let node_array = new Array();           //儲存概念
     let conjunction_array = new Array();    //儲存連接詞
     let split_data = data.split(/\n/g);
     for (let index in split_data){
-        let line = split_data[index].replaceAll("\n", "").replaceAll("\r", "").split(/ /g);   //length=2為:(概念) (概念). length=3為:(概念) (連接詞) (概念).
+        //let line = split_data[index].replaceAll("\n", "").replaceAll("\r", "").split(/ /g);   //length=2為:(概念) (概念). length=3為:(概念) (連接詞) (概念).
+        let line = replace_all(split_data[index], "\n", "");
+        line = replace_all(line, "\r", "");
+        lint = line.split(/ /g);
+        remove_array_item(line, "");    //length=2為:(概念) (概念). length=3為:(概念) (連接詞) (概念).
         remove_array_item(line, "");
         
         for (let i = 0; i < line.length - 1; i++){
