@@ -64,7 +64,7 @@ function parser_concept_file(data){
         //let line = split_data[index].replaceAll("\n", "").replaceAll("\r", "").split(/ /g);   //length=2為:(概念) (概念). length=3為:(概念) (連接詞) (概念).
         let line = replace_all(split_data[index], "\n", "");
         line = replace_all(line, "\r", "");
-        lint = line.split(/ /g);
+        line = line.split(/ /g);
         remove_array_item(line, "");    //length=2為:(概念) (概念). length=3為:(概念) (連接詞) (概念).
         remove_array_item(line, "");
         
